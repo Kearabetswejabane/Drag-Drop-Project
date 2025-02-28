@@ -53,9 +53,20 @@ class ProjectState extends State <Project>{
 const newProject =new Project (Math.random().toString(),title,description, numOfPeople,ProjectStatus.Active
 );
 this.projects.push(newProject)
-for(const listenerFn of this.listeners){
-    listenerFn(this.projects.slice());
-}
+this.updateListeners();
+
+    }
+    moveProject(projectId:string, newStatus:ProjectStatus){
+     const project = this.projects.find(prj => prj.id === projectId);
+     if(project && project.status !== newStatus){
+        project.status = newStatus;
+        this.updateListeners();
+     }
+    }
+    private updateListeners(){
+        for(const listenerFn of this.listeners){
+            listenerFn(this.projects.slice());
+        }
     }
 }
 
@@ -150,9 +161,9 @@ get Persons(){
         event.dataTransfer!.setData('text/plain', this.project.id);
         event.dataTransfer!.effectAllowed = 'move';
     }
-    dragEndHandler(_: DragEvent){
-        console.log('DragEnd')
-    }
+    dragEndHandler(event: DragEvent){
+        console.log('dragEnd')
+    };
     configure(){
         this.element.addEventListener('dragstart',this.dragStartHandler);
         this.element.addEventListener('dragend',this.dragEndHandler);
@@ -187,9 +198,10 @@ if(event.dataTransfer && event.dataTransfer.types[0] === 'text/plain'){
 }
         
     }
-
+@autobind
     dropHandler(event: DragEvent){
-        console.log(event.dataTransfer!.getData('text/plain'));
+        const prjId = (event.dataTransfer!.getData('text/plain'));
+        projectState.moveProject(prjId, this.type === 'active' ? ProjectStatus.Active:ProjectStatus.Finished);
     }
 
     @autobind
