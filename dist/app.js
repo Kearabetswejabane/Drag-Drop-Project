@@ -99,6 +99,14 @@ class Component {
 }
 //ProjectItem Class
 class ProjectItem extends Component {
+    get Persons() {
+        if (this.project.people === 1) {
+            return '1 person';
+        }
+        else {
+            return `${this.project.people} persons`;
+        }
+    }
     constructor(hostId, project) {
         super('single-project', hostId, false, project.id);
         this.project = project;
@@ -108,7 +116,7 @@ class ProjectItem extends Component {
     configure() { }
     renderContent() {
         this.element.querySelector('h2').textContent = this.project.title;
-        this.element.querySelector('h3').textContent = this.project.people.toString();
+        this.element.querySelector('h3').textContent = this.Persons + ' assigned';
         this.element.querySelector('p').textContent = this.project.description;
     }
 }
@@ -125,7 +133,6 @@ class ProjectList extends Component {
         const listEl = document.getElementById(`${this.type}-projects-list`);
         listEl.innerHTML = '';
         for (const prjItem of this.assignedProjects) {
-            // ✅ Create new ProjectItem instances for each project
             new ProjectItem(this.element.querySelector('ul').id, prjItem);
         }
     }

@@ -117,6 +117,15 @@ function autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
 //ProjectItem Class
 class ProjectItem extends Component <HTMLUListElement,HTMLLIElement> {
     private project:Project;
+
+get Persons(){
+    if(this.project.people === 1){
+        return '1 person'
+    }else{
+        return `${this.project.people} persons`
+    }
+}
+
     constructor(hostId:string,project:Project){
         super('single-project', hostId, false, project.id);
         this.project = project;
@@ -127,7 +136,7 @@ class ProjectItem extends Component <HTMLUListElement,HTMLLIElement> {
     configure(){}    
     renderContent(){
         this.element.querySelector('h2')!.textContent = this.project.title;
-        this.element.querySelector('h3')!.textContent = this.project.people.toString();
+        this.element.querySelector('h3')!.textContent = this.Persons + ' assigned';
         this.element.querySelector('p')!.textContent = this.project.description;
     }
 }
@@ -150,7 +159,7 @@ class ProjectList extends Component <HTMLDivElement,HTMLElement> {
         const listEl = document.getElementById( `${this.type}-projects-list`)! as HTMLUListElement;
         listEl.innerHTML = '';
         for (const prjItem of this.assignedProjects) {
-            // ✅ Create new ProjectItem instances for each project
+           
             new ProjectItem(this.element.querySelector('ul')!.id, prjItem);
         }
     }
