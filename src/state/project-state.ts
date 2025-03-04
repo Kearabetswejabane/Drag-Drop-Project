@@ -1,8 +1,9 @@
-namespace App {
+import { Project,ProjectStatus } from "../models/project.js";
+
     //Project State Management Class
 type Listener<T> = (items: T[]) => void;
 
-class State <T> {
+export class State <T> {
     protected listeners:Listener<T>[] = [];
     addListener(listenerFn:Listener<T>){
         this.listeners.push(listenerFn);
@@ -50,4 +51,3 @@ this.updateListeners();
 }
 
 export const projectState = ProjectState.getInstance()
-}
