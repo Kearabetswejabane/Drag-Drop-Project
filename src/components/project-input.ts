@@ -1,7 +1,7 @@
-import { Component } from "./base-components.js";
-import { Validatable,validate } from "../util/validation.js";
-import { autobind } from "../decorators/autobind.js";
-import { projectState } from "../state/project-state.js";
+import { Component } from "./base-components";
+import * as validation from "../util/validation";
+import { autobind as Autobind } from "../decorators/autobind";
+import { projectState } from "../state/project-state";
 
 //Project Input Class
 export class ProjectInput extends Component <HTMLDivElement,HTMLFormElement> {
@@ -26,24 +26,24 @@ const enteredTitle = this.titleInputElement.value;
 const enteredDescription = this.descriptionInputElement.value;
 const enteredPeople = this.peopleInputElement.value;
 
-const titleValidatable:Validatable = {
+const titleValidatable:validation.Validatable = {
     value:enteredTitle,
     required: true,
 };
-const descriptionValidatable:Validatable = {
+const descriptionValidatable:validation.Validatable = {
     value:enteredDescription,
     required: true,
     minLength:5
 };
-const peopleValidatable:Validatable = {
+const peopleValidatable:validation.Validatable = {
     value: +enteredPeople,
     required: true,
     min:1,
     max: 5
 };
 
-if(!validate(titleValidatable) || !validate(descriptionValidatable)
-    || !validate(peopleValidatable)){
+if(!validation.validate(titleValidatable) || !validation.validate(descriptionValidatable)
+    || !validation.validate(peopleValidatable)){
 alert('Invalid Input, please try again.')
 return;
 }else{
@@ -55,7 +55,7 @@ private clearInputs(){
     this.descriptionInputElement.value = '';
     this.peopleInputElement.value = '';
 }
-@autobind
+@Autobind
 private submitHandler(event: Event){
     event.preventDefault();
     console.log(this.titleInputElement.value);
